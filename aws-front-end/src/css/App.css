@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Quicksand", sans-serif;
+  line-height: 1.5;
+  color: #ebe7ef;
+  background: radial-gradient(#280a48, #20043d);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  min-height: 80rem;
+}
+
+.header {
+  background-color: #140524; 
+  padding: 15px 20px; 
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
+}
+
+.header a {
+  text-decoration: none;
+  color: #a18aba; 
+  font-family: "Roboto Condensed", sans-serif; 
+  font-size: 16px;
+  padding: 12px 20px; 
+  margin: 0 8px; 
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.header a:hover {
+  background-color: #1b082f; 
+  color: #ebe7ef;
+}
+
+.active {
+  background-color: #7925d3; 
+  color: #ebe7ef;
+  font-weight: bold;
+}
+
+.main-header {
+    text-align: center; 
+    font-size: 24px; 
+    font-weight: 700; 
+    padding: 20px; 
+    color: #ebe7ef; 
+    background-color: #280a48; 
+    margin-top: 20px;
+  }
+  
