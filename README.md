@@ -1,5 +1,4 @@
-# Full-stack app development
-Contains scripts and code for assignment 1
+# Amplitude Music: A Full Stack Music Subscription Platform
 
 aws-front-end
 react code for ui
