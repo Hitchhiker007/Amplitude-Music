@@ -5,6 +5,7 @@ const musicService = require('./services/query');
 const subscribeService = require ('./services/subscribe');
 const getSubscriptionService = require ('./services/getSubscription');
 const deleteSubscriptionService = require ('./services/deleteSubscription');
+const loginLastFmAccountService = require ('./services/lastFmService');
 
 const healthPath = '/health';
 const registerPath = '/register';
@@ -13,6 +14,7 @@ const musicQueryPath = '/query';
 const subscriptionPath = '/subscribe';
 const getSubscriptionPath = '/getSubscription';
 const deleteSubscriptionPath = '/deleteSubscription';
+const loginLastFmAccountPath = '/loginLastFm';
 
 // here we import all of the services with functions
 // and below using switch case event to see which http method is required
@@ -54,6 +56,11 @@ exports.handler = async (event) => {
       // delete subscriptuion case
       case event.httpMethod === 'DELETE' && event.path === deleteSubscriptionPath:
       response = await deleteSubscriptionService.handler(event);
+      break;
+      // connect last fm case
+      case event.httpMethod === 'PUT' && event.path === loginLastFmAccountPath:
+      const lastFmBody = JSON.parse(event.body);
+      response = await loginLastFmAccountService.lastFmAccountCheck(lastFmBody);
       break;
       // default case
       default:

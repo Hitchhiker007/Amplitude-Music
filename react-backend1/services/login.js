@@ -34,7 +34,8 @@ async function login(user) {
     const userInfo = {
         email: dynamoUser.email,
         // for displaying user when they log in
-        username: dynamoUser.username
+        username: dynamoUser.username,
+        lastFmUsername: dynamoUser.lastFmUsername
     }
     // now genearate a token 
     const token = auth.generateToken(userInfo);

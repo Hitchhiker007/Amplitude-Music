@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';  
 import './css/LoggedIn.css'; 
 import Popup from './service/popup'; 
+import LastFmLogin from './LoginLastFm';
 
 const LoggedIn = () => {
     // hooks for user data, subscription data, the query handling, and alert ui messaging
@@ -15,6 +16,7 @@ const LoggedIn = () => {
     const [alert, setAlert] = useState(null);
     const [popupOpen, setPopupOpen] = useState(false);
     const [popupContent, setPopupContent] = useState({});
+    const [lastFmUsername, setLastFmUsername] = useState(null);
     const navigate = useNavigate();
 
     // define api endpoints
@@ -40,6 +42,7 @@ const LoggedIn = () => {
         if (user && user.username && user.email) {
             setUsername(user.username);
             setUserEmail(user.email); 
+            setLastFmUsername(user.lastFmUsername);
             fetchSubscriptions(user.email);
         } else {
             navigate("/login");
@@ -154,60 +157,68 @@ const LoggedIn = () => {
     };
 
     return (
-        <div className="loggedin-container">
-            <div className="user-area">
-                {/* display current user here ---------------------------------------------------------------------------------*/}
-                <h2>User Area</h2>
-                <p>Welcome Back {username}! You Have Logged In</p>
-                <button className="button" onClick={logoutHandler}>Logout</button>
-            </div>
-            <div className="subscription-area">
-                {/* users current subscriptions with removal option ----------------------------------------------------------- */}
-                <h2>Subscription Area</h2>
-                {alert && <p className="alert">{alert}</p>}
-                {subscriptions.map((sub) => (
-                    // create a new array for each subscriptions
-                    // subscription id is used to identify each element
-                    // when clicking remove on the current ui element, the id of that element is passed to removeSubscription()
-                    <div key={sub.subscriptionId}>
-                        <p>{sub.title} by {sub.artist}</p>
-                        <img 
-                                src={constructS3ImageUrl(sub.img_url)} 
-                                alt={""} 
-                                style={{ width: '100px', height: '100px' }} 
-                            />
+    <div className="loggedin-container">
+        <div className="user-area">
+            {/* display current user here ---------------------------------------------------------------------------------*/}
+            <h2>User Area</h2>
+            <p>Welcome Back {username}! You Have Logged In</p>
+            <button className="button" onClick={logoutHandler}>Logout</button>
+        </div>
 
-                        <button className="button" onClick={() => removeSubscription(sub.subscriptionId)}>Remove</button>
-                    </div>
-                ))}
-            </div>
-            <div className="query-area">
+        {/* SUBSCRIPTION AREA  ---------------------------------------------------------------------------------
+        <div className="subscription-area">
+            <h2>Subscription Area</h2>
+            {alert && <p className="alert">{alert}</p>}
+            {subscriptions.map((sub) => (
+                <div key={sub.subscriptionId}>
+                    <p>{sub.title} by {sub.artist}</p>
+                    <img 
+                        src={constructS3ImageUrl(sub.img_url)} 
+                        alt={""} 
+                        style={{ width: '100px', height: '100px' }} 
+                    />
+                    <button className="button" onClick={() => removeSubscription(sub.subscriptionId)}>Remove</button>
+                </div>
+            ))}
+        </div>
+        */}
+
+        {/* QUERY AREA  ---------------------------------------------------------------------------------
+        <div className="query-area">
             <div>
-                {/* query section --------------------------------------------------------------------------------------------- */}
                 <h2>Query Area</h2>
                 <input className="query-input" type="text" placeholder="Title" value={query.title} onChange={(event) => setQuery({ ...query, title: event.target.value })} />
                 <input className="query-input" type="text" placeholder="Artist" value={query.artist} onChange={(event) => setQuery({ ...query, artist: event.target.value })} />
                 <input className="query-input" type="text" placeholder="Year" value={query.year} onChange={(event) => setQuery({ ...query, year: event.target.value })} />
                 <button className="button" onClick={handleQuery}>Query</button>
                 <div>
-                    {/* here .map() iterates over each element in queryResult array which is the product of handleQuery() */}
                     {queryResult.map((item, index) => typeof item === 'string' ? (
                         <p key={index}>{item}</p>
                     ) : (
                         <div key={item.id}>
                             <p>{item.title} by {item.artist} ({item.year})</p>
                             <img src={item.img_url} alt={item.artist} style={{ width: '100px', height: '100px' }} />
-                            {/* here item is passed to handleSubscribe which sends the subscribe request to the api */}
                             <button className="button" onClick={() => handleSubscribe(item)}>Subscribe</button>
                             <Popup isOpen={popupOpen} content={popupContent} onClose={() => setPopupOpen(false)} />
                         </div>
                     ))}
                 </div>
             </div>
-                
-            </div>
         </div>
-    );
+        */}
+
+        <div>
+            {lastFmUsername ? (
+                // last fm is connected
+                <p>Last.fm Connected</p>
+            ) : (
+                // not connected, show the form
+                <LastFmLogin />
+            )}
+        </div>
+
+    </div>
+);
 };
 
 export default LoggedIn;

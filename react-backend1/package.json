@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "dependencies": {
         "aws-sdk": "^2.1597.0",
+        "axios": "^1.15.2",
         "bcryptjs": "2.4.3",
         "jsonwebtoken": "9.0.2"
     }

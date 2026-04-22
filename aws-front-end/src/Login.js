@@ -22,7 +22,7 @@ const Login = (props) => {
         event.preventDefault();
         // check if email and password are empty
         if (email.trim() === '' || password.trim() === '') {
-            setAlert('Email and Password required!');
+            setAlert('EMAIL AND PASSWORD REQUIRED');
             setTimeout(() => setAlert(''), 5000);
             return;
         }
@@ -67,15 +67,43 @@ const Login = (props) => {
     // render login form
     // on submit execute all of the above 
     return (
-        <div>
-            <form onSubmit={submitHandler}>
-                <h5>Login</h5>
-                email: <input type="text" value={email} onChange={event => setEmail(event.target.value)} />
-                password: <input type="password" value={password} onChange={event => setPassword(event.target.value)} />
-                <input type="submit" value="Login" />
-            </form>
-            {/* this is used for state hook displaying to user error messages within the ui */}
-            {alert && <p className="alert">{alert}</p>}
+        <div className="login-root">
+            <div className="login-scanlines" />
+            <div className="login-grid" />
+            <div className="login-box">
+                <div className="login-header-label">// AUTHENTICATE</div>
+                <h1 className="login-title">AMPLITUDE</h1>
+                <p className="login-subtitle">ENTER CREDENTIALS TO CONTINUE</p>
+                <div className="login-divider" />
+                <form onSubmit={submitHandler} className="login-form">
+                    <div className="login-field">
+                        <label className="login-label">EMAIL_</label>
+                        <input
+                            className="login-input"
+                            type="text"
+                            value={email}
+                            onChange={event => setEmail(event.target.value)}
+                            placeholder="user@example.com"
+                        />
+                    </div>
+                    <div className="login-field">
+                        <label className="login-label">PASSWORD_</label>
+                        <input
+                            className="login-input"
+                            type="password"
+                            value={password}
+                            onChange={event => setPassword(event.target.value)}
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    <button type="submit" className="login-btn">▶ LOGIN</button>
+                </form>
+                {/* this is used for state hook displaying to user error messages within the ui */}
+                {alert && <div className="login-alert">⚠ {alert}</div>}
+                <div className="login-footer">
+                    NO ACCOUNT? <a href="/register" className="login-link">REGISTER HERE →</a>
+                </div>
+            </div>
         </div>
     )
 }

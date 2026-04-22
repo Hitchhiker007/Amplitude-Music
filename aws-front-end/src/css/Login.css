@@ -1,28 +1,122 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
 
-/* Login Form Style */
-form {
+:root {
+    --bg: #008080;
+    --bg-pattern: #007070;
+    --cream: #ffffff;
+    --xp-blue-dark: #0a246a;
+    --xp-grey: #ece9d8;
+    --xp-border: #6e6e6e;
+    --xp-text: #000000;
+    --xp-text-mid: #555555;
+    --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+    --font-pixel: 'Orbitron', monospace;
+}
+
+@keyframes fadeInUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.login-root {
+    min-height: 100vh;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle, var(--bg-pattern) 1px, transparent 1px);
+    background-size: 32px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    padding: 24px;
+}
+
+.login-scanlines, .login-grid { display: none; }
+
+.login-box {
+    width: 100%;
     max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #1b082f; 
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    font-family: "Quicksand", sans-serif;
-  }
-  
-  form h5 {
-    color: #ebe7ef;
-    text-align: center;
-    margin-bottom: 20px;
-  }
+    border: 3px solid var(--xp-blue-dark);
+    box-shadow: 6px 6px 0 var(--xp-blue-dark);
+    animation: fadeInUp 0.4s ease forwards;
+}
 
-  .alert {
-    color: #f55;
+.login-header-label {
+    background: linear-gradient(180deg, #3a6ea5 0%, #0a246a 100%);
+    color: #ffffff;
+    font-family: var(--font-pixel);
+    font-size: 20px;
+    letter-spacing: 3px;
+    padding: 8px 14px;
+    border-bottom: 2px solid var(--xp-blue-dark);
+}
+
+.login-title, .login-subtitle, .login-divider { display: none; }
+
+.login-form {
+    background: var(--xp-grey);
+    padding: 28px 28px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.login-field { display: flex; flex-direction: column; gap: 6px; }
+
+.login-label { font-size: 11px; letter-spacing: 1px; color: var(--xp-text); text-transform: uppercase; font-weight: 700; }
+
+.login-input {
+    background: var(--cream) !important;
+    border: 2px solid var(--xp-border) !important;
+    border-right-color: #d4d0c8 !important;
+    border-bottom-color: #d4d0c8 !important;
+    color: var(--xp-text) !important;
+    -webkit-text-fill-color: var(--xp-text) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 14px !important;
+    padding: 8px 10px !important;
+    outline: none !important;
+    width: 100% !important;
+    box-shadow: inset 2px 2px 3px rgba(0,0,0,0.1) !important;
+}
+
+.login-input::placeholder { color: rgba(0,0,0,0.3) !important; -webkit-text-fill-color: rgba(0,0,0,0.3) !important; }
+.login-input:focus { border-color: #316ac5 !important; outline: 1px solid #316ac5 !important; }
+
+.login-alert {
+    font-size: 11px;
+    color: #8b0000;
+    background: #fde8e8;
+    border: 2px solid #8b0000;
+    padding: 8px 12px;
     text-align: center;
+    font-weight: 700;
+    margin: 0 28px;
+}
+
+.login-btn {
+    background: linear-gradient(180deg, #6fc32a 0%, #3a8a00 100%);
+    color: #ffffff;
+    border: 2px solid #2a6000;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
     padding: 10px;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    background-color: #280a48;
-    border-radius: 5px;
-  }
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 #1a4000, inset 0 1px 0 rgba(255,255,255,0.3);
+    margin: 0 28px 8px;
+    border-radius: 3px;
+    transition: all 0.1s;
+}
+
+.login-btn:hover { background: linear-gradient(180deg, #7fd33a 0%, #4a9a00 100%); transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #1a4000; }
+
+.login-footer {
+    background: var(--xp-grey);
+    border-top: 1px solid #d4d0c8;
+    padding: 12px 28px;
+    font-size: 11px;
+    color: var(--xp-text-mid);
+    text-align: center;
+}
+
+.login-link { color: var(--xp-blue-dark); font-weight: 700; text-decoration: underline; }
+.login-link:hover { color: #316ac5; }

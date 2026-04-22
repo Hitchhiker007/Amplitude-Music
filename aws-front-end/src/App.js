@@ -5,20 +5,35 @@ import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
 import LoggedIn from "./LoggedIn";
-
+import LastFmDashboard from "./LastFmDashboard";
 import AuthRoute from "./routes/authRoutes";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <div className="header">
-          <NavLink exact activeClassName="active" to="/">Home</NavLink>
-          <NavLink activeClassName="active" to="/register">Register</NavLink>
-          <NavLink activeClassName="active" to="/login">Login</NavLink>
-          <NavLink activeClassName="active" to="/loggedin">User Content</NavLink>
-        </div>
-        <div className="main-header">Welcome</div>
+        <nav className="amp-nav">
+          <div className="amp-nav-brand">
+            AMPLITUDE
+          </div>
+          <div className="amp-nav-links">
+            <NavLink to="/" className={({ isActive }) => isActive ? 'amp-nav-link active' : 'amp-nav-link'}>
+              // HOME
+            </NavLink>
+            <NavLink to="/register" className={({ isActive }) => isActive ? 'amp-nav-link active' : 'amp-nav-link'}>
+              // REGISTER
+            </NavLink>
+            <NavLink to="/login" className={({ isActive }) => isActive ? 'amp-nav-link active' : 'amp-nav-link'}>
+              // LOGIN
+            </NavLink>
+            <NavLink to="/loggedin" className={({ isActive }) => isActive ? 'amp-nav-link active' : 'amp-nav-link'}>
+              // ACCOUNT
+            </NavLink>
+            <NavLink to="/lastFmDashboard" className={({ isActive }) => isActive ? 'amp-nav-link amp-nav-link-dashboard active' : 'amp-nav-link amp-nav-link-dashboard'}>
+              ▶ DASHBOARD
+            </NavLink>
+          </div>
+        </nav>
         <div className="content">
           {/* create private and public routes so user content is unavaliable to users who are not logged in */}
           {/* when logged in login and register are then subsequently unavaliable */}
@@ -31,6 +46,9 @@ function App() {
             <Route element={<AuthRoute type="private" />}>
               <Route path="/loggedin" element={<LoggedIn />} />
             </Route>
+            <Route element={<AuthRoute type="private" />}>
+              <Route path="/lastFmDashboard" element={<LastFmDashboard />} />
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
@@ -38,4 +56,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;         
