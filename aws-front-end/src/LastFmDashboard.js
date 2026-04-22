@@ -11,8 +11,7 @@ const LastFmDashboard = () => {
     const user = getAccount();
 
     // last fm api key for authenticating requests to the last fm api
-    // const lastFmApiKey = process.env.REACT_APP_LASTFM_API_KEY;
-    const lastFmApiKey = 'b704fb043d2dfdc2e5d1fdd89cbb7c9d'
+    const lastFmApiKey = process.env.REACT_APP_LASTFM_API_KEY;
 
     // extract the last fm username from the user object stored in session
     // this was saved to dynamodb when the user connected their last fm account
@@ -20,10 +19,10 @@ const LastFmDashboard = () => {
 
     // last fm api endpoint urls — all use the same base url with different method params
     // format=json ensures we get json back instead of xml
-    const lastFMGetTopUserArtistUrl = `http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
-    const lastFMGetTopUserAlbumUrl = `http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
-    const lastFMGetRecentTracksUrl = `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
-    const lastFMGetUserInfoUrl = `http://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
+    const lastFMGetTopUserArtistUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
+    const lastFMGetTopUserAlbumUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
+    const lastFMGetRecentTracksUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
+    const lastFMGetUserInfoUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
 
     // state hooks for storing all last fm data once fetched
     const [topArtists, setTopArtists] = useState([]);
