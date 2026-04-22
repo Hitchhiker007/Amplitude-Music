@@ -1,4 +1,4 @@
-import './css/Home.css';
+import './css/home.css';
 import React, { useState } from 'react';
 import diagram from './diagram.jpg';
 import Modal from './components/Modal';
