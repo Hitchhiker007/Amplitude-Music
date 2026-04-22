@@ -1,51 +1,151 @@
-# Amplitude Music: A Full Stack Music Subscription Platform
+# 🎵 Amplitude – A Last.fm Music Dashboard
 
-aws-front-end
-react code for ui
+Amplitude is a full stack music dashboard that connects to your Last.fm account and visualises your listening history in a more modern and engaging way than Last.fm's native interface.
 
-react-backend 
-contains the lamdba code / backend code to link the api gateway to the dynamoDB operations
+🔗 [Live Site](https://main.d3fs34q4866u1g.amplifyapp.com/)
 
- ssh -i ~/Downloads/will-key-pair.pem ubuntu@"ip4v-address here"
+---
 
- open -a TextEdit ~/.aws/credentials
+## 📚 Table of Contents
 
-References
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Architecture](#-architecture)
+- [Disclaimer](#-disclaimer)
+- [Credits](#-credits)
 
-the following is everything i used to help me with my implmentation:
+---
 
-https://medium.com/@rizkiprass/step-by-step-guide-deploying-a-react-app-on-aws-ec2-b2965af05aa4 
-https://reactrouter.com/en/main/components/navigate
-https://reactrouter.com/en/main/hooks/use-navigate
-https://medium.com/@trungpv1601/how-to-use-react-router-v5-for-private-route-and-public-route-with-react-js-c0f8516d132e
-https://www.w3schools.com/css/
-https://www.freecodecamp.org/news/the-css-handbook-a-handy-guide-to-css-for-developers-b56695917d11/
-https://www.npmjs.com/package/jsonwebtoken
-https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
-https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-aws-jwt-verify
-https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html
-https://dev.to/bgorkem/lambda-function-use-in-react-class-components-5a77
-https://medium.com/hackernoon/a-crash-course-on-serverless-side-rendering-with-react-js-next-js-and-aws-lambda-30e0ba967849
-https://axios-http.com/docs/post_example
-https://axios-http.com/docs/api_intro
-https://medium.com/@g.bharthvajan/create-simple-get-post-rest-api-with-aws-lambda-function-url-7fa962197fa8
-https://www.pulumi.com/ai/answers/4HJYPbBYjFsPsnu5eY56Jp/creating-http-endpoints-for-aws-lambda-functions
-https://medium.com/@josiahmahachi/secure-asp-net-apis-using-x-api-key-api-keys-62d63b2b9fb0#:~:text=What%20is%20an%20X%2DAPI,that%20is%20making%20the%20request.&text=string%20apiKey%20%3D%20Guid.
-https://nelson.cloud/invoking-amazon-api-gateway-with-an-api-key/
-https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_PutItem.html
-[https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_PutItem.html](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/client/put_item.html)
-https://developer.mozilla.org/en-US/docs/Web/API/Response/body
-https://www.serverless.com/blog/react-js-on-aws-lambda
-https://aws.amazon.com/blogs/compute/building-server-side-rendering-for-react-in-aws-lambda/
-https://siddharthac6.medium.com/json-web-token-jwt-the-right-way-of-implementing-with-node-js-65b8915d550e
-https://stackoverflow.com/questions/63804747/how-to-generate-and-set-jwt-secret-and-jwt-expiration-time-in-expresshttps://mattermost.com/blog/json-web-token-jwt-authentication-in-nodejs-applications/
-https://www.udemy.com/course/react-the-complete-guide-incl-redux/?couponCode=OPPPOT42722
-https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.client.run-application-python.01-create-table.html
-https://dev.to/aws-builders/creating-dyanmodb-table-using-boto3-61f
-https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/upload_fileobj.html
-https://www.geeksforgeeks.org/response-raise_for_status-python-requests/
-https://realpython.com/python-download-file-from-url/
-https://stackoverflow.com/questions/22186979/download-file-from-url-and-upload-it-to-aws-s3-without-saving-node-js
-https://medium.com/cloudnloud/creating-an-aws-s3-bucket-with-python-a-step-by-step-guide-2abacdbbac54
-https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-table-provisionedthroughput.html
-https://iamvickyav.medium.com/aws-dynamodb-with-python-boto3-part-2-create-table-insert-item-2dc698a9918f
+## ✨ Features
+
+- User registration and login with bcrypt password hashing and JWT token authentication
+- Last.fm account connection — link your Last.fm username to your Amplitude account
+- Personal music dashboard pulling live scrobble data from the Last.fm API
+- Recent tracks feed with album art and now playing indicator
+- Top artists grid using album art as a workaround for Last.fm's removed artist images
+- Top albums grid with cover art and playcount stats
+- User profile stats — total scrobbles, artist count, track count and member since year
+- Protected routes — dashboard and account pages require authentication
+- Session management via sessionStorage with token-based auth
+
+---
+
+## 🖼 Showcase
+
+### 🏠 Home Page
+
+The landing page introduces Amplitude with a retro OS-inspired aesthetic.
+
+### 🔐 Login / Register
+
+Clean authentication forms with JWT token handling and bcrypt password verification.
+
+### 🎛 Last.fm Dashboard
+
+The core feature — a full visualisation of your Last.fm listening data including recent tracks, top artists and top albums.
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend:**
+
+- **React** – Component-based UI with hooks for state and side effects
+- **React Router DOM** – Client-side routing with public and private route protection
+- **Axios** – HTTP requests to the API Gateway and Last.fm API
+- **CSS3** – Custom styling with a retro Windows XP inspired aesthetic
+
+**Backend:**
+
+- **AWS Lambda** – Serverless Node.js functions handling all backend logic
+- **AWS API Gateway** – REST API routing requests to Lambda functions
+- **AWS DynamoDB** – NoSQL database storing user accounts and subscriptions
+- **AWS Amplify** – Frontend hosting with GitHub CI/CD integration
+- **AWS S3** – Storage for music artwork images
+- **bcryptjs** – Password hashing for secure user registration
+- **jsonwebtoken** – JWT token generation and verification for session auth
+
+**External APIs:**
+
+- **Last.fm API** – Scrobble data, user info, top artists, top albums and recent tracks
+
+---
+
+## 📁 Project Structure
+
+```
+Amplitude-Music/
+│
+├── aws-front-end/                  # React frontend hosted on AWS Amplify
+│   ├── public/
+│   │   ├── index.html
+│   │   └── favicon.svg             # Custom waveform favicon
+│   ├── src/
+│   │   ├── App.js                  # Root component with routing and navbar
+│   │   ├── Home.js                 # Landing page
+│   │   ├── Login.js                # Login form with JWT session handling
+│   │   ├── Register.js             # Registration form
+│   │   ├── LoggedIn.js             # Account page with Last.fm connect form
+│   │   ├── LoginLastFm.js          # Last.fm username connection component
+│   │   ├── LastFmDashboard.js      # Main dashboard — scrobble data visualisation
+│   │   ├── css/                    # All component stylesheets
+│   │   ├── components/
+│   │   │   └── Modal.js            # Reusable modal popup component
+│   │   ├── routes/
+│   │   │   └── authRoutes.js       # Public and private route protection
+│   │   └── service/
+│   │       ├── auth.js             # Session storage helpers (get/set/reset)
+│   │       └── popup.js            # Subscription success popup component
+│
+├── react-backend1/                 # Node.js Lambda backend
+│   ├── index.js                    # Main Lambda handler — routes all HTTP requests
+│   ├── services/
+│   │   ├── registration.js         # User registration with bcrypt hashing
+│   │   ├── login.js                # User login with token generation
+│   │   ├── query.js                # Music search queries against DynamoDB
+│   │   ├── subscribe.js            # Add a song subscription for a user
+│   │   ├── getSubscription.js      # Fetch all subscriptions for a user
+│   │   ├── deleteSubscription.js   # Remove a subscription
+│   │   └── lastFmService.js        # Verify and save Last.fm username to DynamoDB
+│   └── utils/
+│       ├── auth.js                 # JWT token generation and verification
+│       └── util.js                 # Response builder utility
+│
+└── README.md
+```
+
+---
+
+## 🏗 Architecture
+
+The system follows a serverless architecture on AWS:
+
+```
+React Frontend (Amplify)
+        ↓
+API Gateway (REST API)
+        ↓
+Lambda Function (Node.js router)
+        ↓
+DynamoDB (login + subscription tables)
+
+Last.fm API ← called directly from React frontend
+```
+
+- The **React frontend** communicates with **API Gateway** using an API key for all authenticated operations
+- **Lambda** acts as a single router function, dispatching requests to the appropriate service based on HTTP method and path
+- **DynamoDB** stores two tables — `login` (users) and `subscription` (saved songs)
+- The **Last.fm API** is called directly from the frontend to fetch scrobble data, avoiding unnecessary Lambda invocations for read-only public data
+
+---
+
+## ⚠️ Disclaimer
+
+This project is a personal project created for learning purposes. Last.fm data belongs to Last.fm and their respective users. Amplitude is not affiliated with Last.fm — this is a non-commercial project built for educational purposes.
+
+---
+
+## 🌟 Credits
+
+- **Design & Development:** William Wells

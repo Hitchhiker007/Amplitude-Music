@@ -12,6 +12,7 @@ const LastFmDashboard = () => {
 
     // last fm api key for authenticating requests to the last fm api
     const lastFmApiKey = process.env.REACT_APP_LASTFM_API_KEY;
+    console.log('API KEY:', lastFmApiKey); // add this line
 
     // extract the last fm username from the user object stored in session
     // this was saved to dynamodb when the user connected their last fm account
