@@ -12,7 +12,6 @@ const LastFmDashboard = () => {
 
     // last fm api key for authenticating requests to the last fm api
     const lastFmApiKey = process.env.REACT_APP_LASTFM_API_KEY;
-    console.log('API KEY:', lastFmApiKey); // add this line
 
     // extract the last fm username from the user object stored in session
     // this was saved to dynamodb when the user connected their last fm account
@@ -34,16 +33,28 @@ const LastFmDashboard = () => {
     // loading state controls whether we show the loading screen or the dashboard
     const [loading, setLoading] = useState(true);
 
+    function getUserInfo() {
+        return axios.get(lastFMGetUserInfoUrl);
+    }
+
+    function getRecentTrack() {
+        return axios.get(lastFMGetRecentTracksUrl);
+    }
+
+    function getTopArtists() {
+        return axios.get(lastFMGetTopUserArtistUrl);
+    }
+
+    function getTopAlbulms() {
+        return axios.get(lastFMGetTopUserAlbumUrl);
+    }
+
     // on component mount, fetch all last fm data in a single async function
     // all four requests run sequentially — if any fail the catch block fires
     useEffect(() => {
     const fetchUserData = async () => {
         try {
-            // fire all four api requests and await each response
-            const userInfo = await axios.get(lastFMGetUserInfoUrl);
-            const recentTracks = await axios.get(lastFMGetRecentTracksUrl);
-            const topArtists = await axios.get(lastFMGetTopUserArtistUrl);
-            const topAlbums = await axios.get(lastFMGetTopUserAlbumUrl);
+            const [userInfo, recentTracks, topAlbums, topArtists] = await Promise.all([getUserInfo(), getRecentTrack(), getTopArtists(), getTopAlbulms()]);
 
             // log raw responses for debugging — can be removed in production
             console.log('userInfo:', userInfo.data);
