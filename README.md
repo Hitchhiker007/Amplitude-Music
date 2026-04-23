@@ -1,6 +1,6 @@
 # 🎵 Amplitude – A Last.fm Music Dashboard
 
-Amplitude is a full stack music dashboard that connects to your Last.fm account and visualises your listening history in a more modern and engaging way than Last.fm's native interface.
+Amplitude is a full stack music dashboard that connects to your Last.fm account and visualises your listening history in a modern way.
 
 🔗 [Live Site](https://main.d3fs34q4866u1g.amplifyapp.com/)
 
@@ -22,8 +22,7 @@ Amplitude is a full stack music dashboard that connects to your Last.fm account 
 - User registration and login with bcrypt password hashing and JWT token authentication
 - Last.fm account connection — link your Last.fm username to your Amplitude account
 - Personal music dashboard pulling live scrobble data from the Last.fm API
-- Recent tracks feed with album art and now playing indicator
-- Top artists grid using album art as a workaround for Last.fm's removed artist images
+- Top artists grid using album art
 - Top albums grid with cover art and playcount stats
 - User profile stats — total scrobbles, artist count, track count and member since year
 - Protected routes — dashboard and account pages require authentication
