@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAccount } from './service/auth';
-import axios from 'axios';
 import './css/LastFmDashboard.css';
+import { getUserInfo, getRecentTracks, getTopArtists, getTopAlbums } from './service/lastFmService';
 
 const LastFmDashboard = () => {
     const navigate = useNavigate();
@@ -17,13 +17,6 @@ const LastFmDashboard = () => {
     // this was saved to dynamodb when the user connected their last fm account
     const lastFmUsername = user.lastFmUsername;
 
-    // last fm api endpoint urls — all use the same base url with different method params
-    // format=json ensures we get json back instead of xml
-    const lastFMGetTopUserArtistUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
-    const lastFMGetTopUserAlbumUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
-    const lastFMGetRecentTracksUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
-    const lastFMGetUserInfoUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${lastFmUsername}&api_key=${lastFmApiKey}&format=json`;
-
     // state hooks for storing all last fm data once fetched
     const [topArtists, setTopArtists] = useState([]);
     const [topAlbums, setTopAlbums] = useState([]);
@@ -33,28 +26,18 @@ const LastFmDashboard = () => {
     // loading state controls whether we show the loading screen or the dashboard
     const [loading, setLoading] = useState(true);
 
-    function getUserInfo() {
-        return axios.get(lastFMGetUserInfoUrl);
-    }
-
-    function getRecentTrack() {
-        return axios.get(lastFMGetRecentTracksUrl);
-    }
-
-    function getTopArtists() {
-        return axios.get(lastFMGetTopUserArtistUrl);
-    }
-
-    function getTopAlbulms() {
-        return axios.get(lastFMGetTopUserAlbumUrl);
-    }
 
     // on component mount, fetch all last fm data in a single async function
     // all four requests run sequentially — if any fail the catch block fires
     useEffect(() => {
     const fetchUserData = async () => {
         try {
-            const [userInfo, recentTracks, topAlbums, topArtists] = await Promise.all([getUserInfo(), getRecentTrack(), getTopArtists(), getTopAlbulms()]);
+            const [userInfo, recentTracks, topAlbums, topArtists] = await Promise.all([
+                getUserInfo(lastFmUsername), 
+                getRecentTracks(lastFmUsername), 
+                getTopAlbums(lastFmUsername),
+                getTopArtists(lastFmUsername)
+            ]);
 
             // log raw responses for debugging — can be removed in production
             console.log('userInfo:', userInfo.data);
@@ -119,6 +102,15 @@ const LastFmDashboard = () => {
         return new Date(unixTimestamp * 1000).toLocaleDateString('en-AU', {
             day: '2-digit', month: 'short', year: 'numeric'
         });
+    };
+
+    const refreshRecentTracks = async () => {
+        try {
+        const response = await getRecentTracks(lastFmUsername);
+        setRecentTracks(response.data.recenttracks.track);
+        } catch (error) {
+            console.error('Error refreshing recent tracks:', error);
+        }
     };
  
     // extract the year the user registered on last fm from the unix timestamp
@@ -203,19 +195,20 @@ const LastFmDashboard = () => {
                     <div className="amp-section-header">
                         <span className="amp-section-prefix">//</span>
                         RECENT TRANSMISSIONS
+                        <button className="amp-back-btn" onClick={refreshRecentTracks}>↻ REFRESH</button>
                         <span className="amp-section-count">{recentTracks.length} TRACKS</span>
                     </div>
                     <div className="amp-track-list">
                         {/* slice to 15 tracks and map over each one */}
                         {recentTracks.slice(0, 15).map((track, index) => {
-                            // last fm marks currently playing tracks with a nowplaying attribute
+                           {/*last fm marks currently playing tracks with a nowplaying attribute*/}
                             const isNowPlaying = track['@attr']?.nowplaying === 'true';
                             // get medium sized album art for the track row
                             const imgSrc = getImage(track.image, 'medium');
                             return (
                                 <div
                                     key={index}
-                                    // add now-playing class for special styling on the active track
+                                    //  add now-playing class for special styling on the active track
                                     className={`amp-track-item${isNowPlaying ? ' now-playing' : ''}`}
                                 >
                                     {/* track number padded to 2 digits e.g. 01, 02 */}

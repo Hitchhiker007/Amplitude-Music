@@ -7,6 +7,8 @@ import Register from "./Register";
 import LoggedIn from "./LoggedIn";
 import LastFmDashboard from "./LastFmDashboard";
 import AuthRoute from "./routes/authRoutes";
+import LibraryAlbum from "./LibraryAlbums";
+import LibraryArtist from "./LibraryArtists";
 
 function App() {
   return (
@@ -29,6 +31,12 @@ function App() {
             <NavLink to="/loggedin" className={({ isActive }) => isActive ? 'amp-nav-link active' : 'amp-nav-link'}>
               // ACCOUNT
             </NavLink>
+            <NavLink to="/libraryAlbum" className={({ isActive }) => isActive ? 'amp-nav-link active' : 'amp-nav-link'}>
+              // AlBUMS
+            </NavLink>
+            <NavLink to="/libraryArtist" className={({ isActive }) => isActive ? 'amp-nav-link active' : 'amp-nav-link'}>
+              // ARTISTS
+            </NavLink>
             <NavLink to="/lastFmDashboard" className={({ isActive }) => isActive ? 'amp-nav-link amp-nav-link-dashboard active' : 'amp-nav-link amp-nav-link-dashboard'}>
               ▶ DASHBOARD
             </NavLink>
@@ -45,6 +53,12 @@ function App() {
             </Route>
             <Route element={<AuthRoute type="private" />}>
               <Route path="/loggedin" element={<LoggedIn />} />
+            </Route>
+            <Route element={<AuthRoute type="private" />}>
+              <Route path="/libraryAlbum" element={<LibraryAlbum/>} />
+            </Route>
+            <Route element={<AuthRoute type="private" />}>
+              <Route path="/libraryArtist" element={<LibraryArtist/>} />
             </Route>
             <Route element={<AuthRoute type="private" />}>
               <Route path="/lastFmDashboard" element={<LastFmDashboard />} />
