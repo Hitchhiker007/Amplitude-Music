@@ -1,34 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { getArtistAllData, getTopAlbums} from './service/lastFmService';
+import { getArtistAllData, getAlbumAllData} from './service/lastFmService';
 import { getAccount } from './service/auth';
 import './css/LibraryArtist.css';
 
-
+const user = getAccount();
+const lastFmUsername = user.lastFmUsername;
 
 const LibraryArtist = () => {
-
-    const user = getAccount();
-    const lastFmUsername = user.lastFmUsername;
 
     // state hooks for storing all last fm data once fetched
     const [artists, setArtists] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [topAlbums, setTopAlbums] = useState([]);
+    const [albumData, setAlbumData] = useState([]);
+
+    // on mounc fetch all albums to avoid wasteful api calls
+    useEffect(() => {
+        const fetchAllAlbums = async () => {
+            try {
+                const firstPage = await getAlbumAllData(lastFmUsername, 1);
+                const totalAlbumPages = parseInt(firstPage.data.topalbums['@attr'].totalPages);
+
+                const remainingPages = await Promise.all(
+                    Array.from({length: totalAlbumPages - 1}, (_, i) =>
+                    getAlbumAllData(lastFmUsername, i + 2))
+                )
+
+                const allAlbums = [
+                    ...firstPage.data.topalbums.album,
+                    ...remainingPages.flatMap(page => page.data.topalbums.album)
+                ];
+
+                setAlbumData(allAlbums);
+            } catch (error) {
+                console.error('Error fetching all albums:', error);
+            }
+        };
+        fetchAllAlbums();
+    }, []); // empty array = run only once
 
     useEffect(() => {
         const fetchArtistData = async () => {
             try {
 
-                const [artist, topAlbums] = await Promise.all([
-                                getArtistAllData(lastFmUsername, currentPage), 
-                                getTopAlbums(lastFmUsername),
-                            ]);
-
-                setArtists(artist.data.topartists.artist);
-                setTotalPages(artist.data.topartists['@attr'].totalPages);
-                setTopAlbums(topAlbums.data.topalbums.album);
+                // fetch artists and first album page simultaneously
+                const artistResponse = await getArtistAllData(lastFmUsername, currentPage);
+                
+                setArtists(artistResponse.data.topartists.artist);
+                setTotalPages(artistResponse.data.topartists['@attr'].totalPages);
 
                 setLoading(false);
 
@@ -54,7 +74,7 @@ const LibraryArtist = () => {
     // as a workaround, we just use the artists top album from our already-fetched
     // topAlbums data 
     const getArtistAlbumArt = (artistName) => {
-        const album = topAlbums.find(a => a.artist.name === artistName);
+        const album = albumData.find(a => a.artist.name === artistName);
         return album ? getImage(album.image, 'large') : null;
     };
 
