@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getAlbumAllData } from './service/lastFmService';
-import { getAccount } from './service/auth';
+import { useUser } from './context/UserContext';
 import './css/LibraryAlbum.css';
-
 
 
 const LibraryAlbum = () => {
 
-    const user = getAccount();
-    const lastFmUsername = user.lastFmUsername;
+    const { user } = useUser();
+    const lastFmUsername = user?.lastFmUsername;
 
     // state hooks for storing all last fm data once fetched
     const [albums, setAlbums] = useState([]);
@@ -35,7 +34,7 @@ const LibraryAlbum = () => {
             
         }
         fetchAlbumData()
-    }, [currentPage])
+    },[currentPage])
 
      // helper function to extract an image url from last fms image array
     const getImage = (images, size = 'large') => {

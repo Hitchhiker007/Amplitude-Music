@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = 'https://ws.audioscrobbler.com/2.0';
+// last fm api key for authenticating requests to the last fm api
 const apiKey = process.env.REACT_APP_LASTFM_API_KEY;
 
 

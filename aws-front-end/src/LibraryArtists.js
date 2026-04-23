@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getArtistAllData, getAlbumAllData} from './service/lastFmService';
-import { getAccount } from './service/auth';
+import { useUser } from './context/UserContext';
 import './css/LibraryArtist.css';
 
-const user = getAccount();
-const lastFmUsername = user.lastFmUsername;
-
 const LibraryArtist = () => {
+
+    const { user } = useUser();
+    const lastFmUsername = user?.lastFmUsername;
 
     // state hooks for storing all last fm data once fetched
     const [artists, setArtists] = useState([]);

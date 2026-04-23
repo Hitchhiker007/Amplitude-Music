@@ -9,10 +9,12 @@ import LastFmDashboard from "./LastFmDashboard";
 import AuthRoute from "./routes/authRoutes";
 import LibraryAlbum from "./LibraryAlbums";
 import LibraryArtist from "./LibraryArtists";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
   return (
     <div className="App">
+      <UserProvider>
       <BrowserRouter>
         <nav className="amp-nav">
           <div className="amp-nav-brand">
@@ -66,6 +68,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      </UserProvider>
     </div>
   );
 }

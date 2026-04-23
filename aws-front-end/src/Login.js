@@ -3,12 +3,15 @@ import './css/Login.css';
 import { setSession } from './service/auth';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useUser } from './context/UserContext';
 
 // defining the aws api gateway invoke url and api key
 const loginUrl = 'https://hoyntrc0ad.execute-api.ap-southeast-2.amazonaws.com/prod/login';
 const x_api_key = 'uerHTirwmV5Q5Og6LAoOD9airqPY7s2L1mnHYNb1';
 
 const Login = (props) => {
+    // set the user for the global context
+    const { setUser } = useUser();
 
     // state hooks for email, password and ui alert messages
     const [email, setEmail] = useState('');
@@ -44,6 +47,7 @@ const Login = (props) => {
         axios.post(loginUrl, requestBody, requestConfig).then(response => {
             // when login succesful set the current session with the user and token
             setSession(response.data.user, response.data.token);
+            setUser(response.data.user); // update global context
             // now automatically naviagte to the main page
             navigate("/loggedin");
             console.log("Login Successful!");

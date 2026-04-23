@@ -5,6 +5,7 @@ import axios from 'axios';
 import './css/LoggedIn.css'; 
 import Popup from './service/popup'; 
 import LastFmLogin from './LoginLastFm';
+import { useUser } from './context/UserContext';
 
 const LoggedIn = () => {
     // hooks for user data, subscription data, the query handling, and alert ui messaging
@@ -18,6 +19,7 @@ const LoggedIn = () => {
     const [popupContent, setPopupContent] = useState({});
     const [lastFmUsername, setLastFmUsername] = useState(null);
     const navigate = useNavigate();
+    const { setUser } = useUser();
 
     // define api endpoints
     const deleteUrl = 'https://hoyntrc0ad.execute-api.ap-southeast-2.amazonaws.com/prod/deleteSubscription';
@@ -153,6 +155,7 @@ const LoggedIn = () => {
     // on logout redirect to login page and reset user and token
     const logoutHandler = () => {
         resetSession();
+        setUser(null); // reset user thats logged in
         navigate("/login");
     };
 

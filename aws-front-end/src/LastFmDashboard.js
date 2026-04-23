@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAccount } from './service/auth';
+import { useUser } from './context/UserContext';
 import './css/LastFmDashboard.css';
 import { getUserInfo, getRecentTracks, getTopArtists, getTopAlbums } from './service/lastFmService';
 
 const LastFmDashboard = () => {
     const navigate = useNavigate();
 
-    // get the current logged in user from session storage
-    const user = getAccount();
-
-    // last fm api key for authenticating requests to the last fm api
-    const lastFmApiKey = process.env.REACT_APP_LASTFM_API_KEY;
-
-    // extract the last fm username from the user object stored in session
-    // this was saved to dynamodb when the user connected their last fm account
-    const lastFmUsername = user.lastFmUsername;
+    const { user } = useUser();
+    const lastFmUsername = user?.lastFmUsername;
 
     // state hooks for storing all last fm data once fetched
     const [topArtists, setTopArtists] = useState([]);
