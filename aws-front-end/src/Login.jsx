@@ -85,6 +85,9 @@ const Login = (props) => {
                         <input
                             className="login-input"
                             type="text"
+                            // autoComplete="off" prevents browser password managers from injecting 
+                            // autofill UI into the input field which causes ResizeObserver errors
+                            autoComplete="off"
                             value={email}
                             onChange={event => setEmail(event.target.value)}
                             placeholder="user@example.com"
@@ -95,6 +98,7 @@ const Login = (props) => {
                         <input
                             className="login-input"
                             type="password"
+                            autoComplete="off"
                             value={password}
                             onChange={event => setPassword(event.target.value)}
                             placeholder="••••••••"

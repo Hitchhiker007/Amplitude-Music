@@ -3,23 +3,29 @@ import { getAccount, resetSession } from './service/auth';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';  
 import './css/LoggedIn.css'; 
-import Popup from './service/popup'; 
+import Popup from './service/Popup'; 
 import LastFmLogin from './LoginLastFm';
 import { useUser } from './context/UserContext';
 
 const LoggedIn = () => {
     // hooks for user data, subscription data, the query handling, and alert ui messaging
-    const [username, setUsername] = useState('');
-    const [userEmail, setUserEmail] = useState('');
+    // const [username, setUsername] = useState('');
+    // const [userEmail, setUserEmail] = useState('');
     const [subscriptions, setSubscriptions] = useState([]);
     const [queryResult, setQueryResult] = useState([]);
     const [query, setQuery] = useState({ title: '', artist: '', year: '' });
     const [alert, setAlert] = useState(null);
     const [popupOpen, setPopupOpen] = useState(false);
     const [popupContent, setPopupContent] = useState({});
-    const [lastFmUsername, setLastFmUsername] = useState(null);
+    // const [lastFmUsername, setLastFmUsername] = useState(null);
     const navigate = useNavigate();
     const { setUser } = useUser();
+
+    const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+        lastFmUsername: null
+    })
 
     // define api endpoints
     const deleteUrl = 'https://hoyntrc0ad.execute-api.ap-southeast-2.amazonaws.com/prod/deleteSubscription';
@@ -42,9 +48,12 @@ const LoggedIn = () => {
         // fetch all previous subscriptions 
         const user = getAccount();
         if (user && user.username && user.email) {
-            setUsername(user.username);
-            setUserEmail(user.email); 
-            setLastFmUsername(user.lastFmUsername);
+            setUserData({
+                username: user.username,
+                email: user.email,
+                lastFmUsername: user.lastFmUsername,
+        });
+            
             fetchSubscriptions(user.email);
         } else {
             navigate("/login");
@@ -81,13 +90,13 @@ const LoggedIn = () => {
                     'x-api-key': x_api_key, 
                 },
                 data: {
-                    userEmail: userEmail,
+                    userEmail: userData.email,
                     subscriptionId: subscriptionId
                 }
             });
             if (response.status === 200) {
                 // refresh the subscription ui after deleting
-                fetchSubscriptions(userEmail); 
+                fetchSubscriptions(userData.email); 
             }
         } catch (error) {
             console.error('Error removing subscription:', error);
@@ -121,7 +130,7 @@ const LoggedIn = () => {
     const handleSubscribe = async (item) => {
         try {
           const requestBody = {
-            userEmail: userEmail, 
+            userEmail: userData.email, 
             img_url: item.img_url,
             artist: item.artist,
             title: item.title
@@ -149,7 +158,7 @@ const LoggedIn = () => {
           console.error(error);
         }
         // call this to update the ui for each indivdual addition
-        fetchSubscriptions(userEmail);
+        fetchSubscriptions(userData.email);
       };
       
     // on logout redirect to login page and reset user and token
@@ -164,7 +173,7 @@ const LoggedIn = () => {
         <div className="user-area">
             {/* display current user here ---------------------------------------------------------------------------------*/}
             <h2>User Area</h2>
-            <p>Welcome Back {username}! You Have Logged In</p>
+            <p>Welcome Back {userData.username}! You Have Logged In</p>
             <button className="button" onClick={logoutHandler}>Logout</button>
         </div>
 
@@ -211,7 +220,7 @@ const LoggedIn = () => {
         */}
 
         <div>
-            {lastFmUsername ? (
+            {userData.lastFmUsername ? (
                 // last fm is connected
                 <p>Last.fm Connected</p>
             ) : (
